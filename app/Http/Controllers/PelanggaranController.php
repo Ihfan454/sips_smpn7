@@ -26,7 +26,11 @@ class PelanggaranController extends Controller
             abort(403, 'Anda tidak memiliki hak akses untuk mencatat pelanggaran.');
         }
 
-        $data_siswa = Siswa::all();
+        $data_siswa = Siswa::join('kelas', 'siswa.class_id', '=', 'kelas.id')
+                            ->orderBy('kelas.nama', 'asc')
+                            ->orderBy('siswa.nama_lengkap', 'asc')
+                            ->select('siswa.*', 'kelas.nama as kelas')
+                            ->get();
         return view('pelanggaran-create', compact('data_siswa'));
     }
 
@@ -70,7 +74,11 @@ class PelanggaranController extends Controller
         }
 
         $pelanggaran = Pelanggaran::findOrFail($id);
-        $data_siswa = \App\Models\Siswa::orderBy('nama_lengkap', 'asc')->get();
+        $data_siswa = \App\Models\Siswa::join('kelas', 'siswa.class_id', '=', 'kelas.id')
+                            ->orderBy('kelas.nama', 'asc')
+                            ->orderBy('siswa.nama_lengkap', 'asc')
+                            ->select('siswa.*', 'kelas.nama as kelas')
+                            ->get();
         return view('pelanggaran-edit', compact('pelanggaran', 'data_siswa'));
     }
 

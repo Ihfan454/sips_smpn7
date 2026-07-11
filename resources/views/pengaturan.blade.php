@@ -80,9 +80,15 @@
                                     @endif
                                 </div>
                                 <div style="display:flex; flex-direction:column; gap: 8px;">
-                                    <label for="foto" class="upload-label">Unggah Foto Baru</label>
+                                    <div style="display:flex; gap:10px; align-items:center;">
+                                        <label for="foto" class="upload-label">Unggah Foto Baru</label>
+                                        @if($user->foto && file_exists(public_path($user->foto)))
+                                            <button type="button" class="btn btn-danger btn-sm" id="btnHapusFoto" style="padding: 6px 12px; font-size: 13px; margin:0;">Hapus Foto</button>
+                                        @endif
+                                    </div>
                                     <input type="file" id="foto" name="foto_upload" accept="image/*" style="font-size: 13px;">
                                     <input type="hidden" name="foto_base64" id="foto_base64">
+                                    <input type="hidden" name="hapus_foto" id="hapus_foto" value="0">
                                     <small class="text-muted">Rekomendasi ukuran square/kotak, Maksimal 2MB (JPG, PNG, SVG)</small>
                                     @error('foto') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
@@ -310,6 +316,9 @@
             fotoInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (file) {
+                    // Jika ada gambar yang dipilih, batalkan hapus foto
+                    document.getElementById('hapus_foto').value = '0';
+                    
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         // Set image src to cropper
@@ -366,6 +375,26 @@
                     cropper = null;
                 }
             });
+
+            // Delete Photo
+            const btnHapusFoto = document.getElementById('btnHapusFoto');
+            const hapusFotoInput = document.getElementById('hapus_foto');
+            if(btnHapusFoto) {
+                btnHapusFoto.addEventListener('click', () => {
+                    hapusFotoInput.value = '1';
+                    // Reset inputs
+                    fotoInput.value = '';
+                    fotoBase64Input.value = '';
+                    
+                    // Reset preview to initials
+                    const name = document.getElementById('name').value;
+                    const initial = name ? name.substring(0, 1).toUpperCase() : 'U';
+                    previewDiv.innerHTML = initial;
+                    
+                    // Hide the button since it's removed
+                    btnHapusFoto.style.display = 'none';
+                });
+            }
         });
     </script>
 </body>

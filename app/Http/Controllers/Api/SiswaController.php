@@ -33,7 +33,12 @@ class SiswaController extends Controller
             });
         }
 
-        $siswas = $query->orderBy('nama_lengkap')->get()->map(fn (Siswa $siswa) => $this->formatSiswa($siswa));
+        $siswas = $query->join('kelas', 'siswa.class_id', '=', 'kelas.id')
+                        ->orderBy('kelas.nama', 'asc')
+                        ->orderBy('siswa.nama_lengkap', 'asc')
+                        ->select('siswa.*')
+                        ->get()
+                        ->map(fn (Siswa $siswa) => $this->formatSiswa($siswa));
 
         return response()->json(['data' => $siswas]);
     }

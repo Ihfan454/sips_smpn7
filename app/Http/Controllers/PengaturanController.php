@@ -66,7 +66,13 @@ class PengaturanController extends Controller
 
         $data = $request->only(['name', 'email', 'nip', 'ni_pppk', 'no_hp', 'alamat']);
 
-        if ($request->filled('foto_base64')) {
+        if ($request->input('hapus_foto') == '1') {
+            // Hapus foto jika diminta
+            if ($user->foto && File::exists(public_path($user->foto))) {
+                File::delete(public_path($user->foto));
+            }
+            $data['foto'] = null;
+        } else if ($request->filled('foto_base64')) {
             $base64Image = $request->input('foto_base64');
             // Extract the base64 string
             if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {

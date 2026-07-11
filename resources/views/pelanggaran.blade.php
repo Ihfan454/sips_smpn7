@@ -32,7 +32,7 @@
                         <span class="badge">0</span>
                     </div>
                     <div class="search-box">
-                        <i class="fas fa-search"></i>
+                        <i class="fas fa-magnifying-glass"></i>
                         <input type="text" id="searchInput" placeholder="Cari...">
                     </div>
                 </div>
@@ -40,10 +40,10 @@
 
             <section class="recent-section page-section-margin">
                 <div class="report-header">
-                    <h3><i class="fas fa-exclamation-triangle"></i> Daftar Pelanggaran Siswa</h3>
+                    <h3><i class="fas fa-gavel"></i> Daftar Pelanggaran Siswa</h3>
                     @if(auth()->user()->isAdminBK() || auth()->user()->isGuruBK())
                     <a href="{{ route('pelanggaran.create') }}" class="btn-tambah">
-                        <i class="fas fa-plus"></i> Catat Pelanggaran
+                        <i class="fas fa-circle-plus"></i> Catat Pelanggaran
                     </a>
                     @endif
                 </div>

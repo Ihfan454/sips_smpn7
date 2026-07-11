@@ -36,7 +36,7 @@
 
             <section class="section-card">
                 <div class="report-header">
-                    <h3 class="page-heading"><i class="fas fa-users-cog"></i> Daftar Akun Guru BK / Admin</h3>
+                    <h3 class="page-heading"><i class="fas fa-user-shield"></i> Daftar Akun Guru BK / Admin</h3>
                     <a href="{{ route('guru-bk.create') }}" class="btn-tambah">
                         <i class="fas fa-user-plus"></i> Tambah Guru BK
                     </a>
@@ -44,7 +44,7 @@
 
                 @if(session('success'))
                     <div class="alert alert-success" id="alertSuccess" style="transition: opacity 0.5s ease;">
-                        <i class="fas fa-check-circle"></i> {{ session('success') }}
+                        <i class="fas fa-circle-check"></i> {{ session('success') }}
                     </div>
                     <script>
                         setTimeout(() => {
@@ -56,7 +56,7 @@
 
                 @if(session('error'))
                     <div class="alert alert-error" id="alertError" style="transition: opacity 0.5s ease;">
-                        <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+                        <i class="fas fa-circle-exclamation"></i> {{ session('error') }}
                     </div>
                     <script>
                         setTimeout(() => {

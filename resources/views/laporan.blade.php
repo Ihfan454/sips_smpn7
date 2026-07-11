@@ -127,7 +127,7 @@
                                 <i class="fas fa-filter"></i> Filter
                             </button>
                             <a href="{{ route('laporan') }}" class="btn-reset">
-                                <i class="fas fa-undo"></i> Reset
+                                <i class="fas fa-arrow-rotate-left"></i> Reset
                             </a>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                         <h4>Total Kasus</h4>
                         <div class="value">{{ $stats['total'] }}</div>
                     </div>
-                    <div class="stat-icon"><i class="fas fa-folder-open"></i></div>
+                    <div class="stat-icon"><i class="fas fa-book-open"></i></div>
                 </div>
 
                 <div class="page-stat-card ringan">
@@ -149,7 +149,7 @@
                         <h4>Ringan</h4>
                         <div class="value value-green">{{ $stats['ringan'] }}</div>
                     </div>
-                    <div class="stat-icon"><i class="fas fa-check-circle icon-green"></i></div>
+                    <div class="stat-icon"><i class="fas fa-circle-check icon-green"></i></div>
                 </div>
 
                 <div class="page-stat-card sedang">
@@ -157,7 +157,7 @@
                         <h4>Sedang</h4>
                         <div class="value value-yellow">{{ $stats['sedang'] }}</div>
                     </div>
-                    <div class="stat-icon"><i class="fas fa-exclamation-circle icon-yellow"></i></div>
+                    <div class="stat-icon"><i class="fas fa-circle-exclamation icon-yellow"></i></div>
                 </div>
 
                 <div class="page-stat-card berat">
@@ -165,7 +165,7 @@
                         <h4>Berat</h4>
                         <div class="value value-red">{{ $stats['berat'] }}</div>
                     </div>
-                    <div class="stat-icon"><i class="fas fa-times-circle icon-red"></i></div>
+                    <div class="stat-icon"><i class="fas fa-circle-xmark icon-red"></i></div>
                 </div>
 
                 <div class="page-stat-card poin">
@@ -173,14 +173,14 @@
                         <h4>Total Poin</h4>
                         <div class="value value-cyan">{{ $stats['total_poin'] }}</div>
                     </div>
-                    <div class="stat-icon"><i class="fas fa-exclamation-triangle icon-cyan"></i></div>
+                    <div class="stat-icon"><i class="fas fa-coins icon-cyan"></i></div>
                 </div>
             </section>
 
             <!-- Report Table Section -->
             <section class="report-section">
                 <div class="report-header">
-                    <h3 class="page-heading"><i class="fas fa-table"></i> Hasil Pencarian Laporan</h3>
+                    <h3 class="page-heading"><i class="fas fa-list-check"></i> Hasil Pencarian Laporan</h3>
                     <button onclick="window.print()" class="btn-print">
                         <i class="fas fa-print"></i> Cetak Laporan
                     </button>

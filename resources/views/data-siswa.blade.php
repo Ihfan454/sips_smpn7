@@ -51,7 +51,7 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon blue">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Total Siswa</h3>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon purple">
-                            <i class="fas fa-chalkboard"></i>
+                            <i class="fas fa-school"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Total Kelas</h3>
@@ -109,13 +109,13 @@
                 <div class="filter-right">
                     @if(auth()->user()->isAdminBK() || auth()->user()->isGuruBK())
                     <button class="btn-add" id="btnTambahSiswa" style="margin-right: 0.5rem;">
-                        <i class="fas fa-plus"></i> Tambah Siswa
+                        <i class="fas fa-user-plus"></i> Tambah Siswa
                     </button>
                     <button class="btn-export" id="btnNaikKelas" style="background-color: #f59e0b; color: white; border: none; margin-right: 0.5rem;">
-                        <i class="fas fa-level-up-alt"></i> Naik/Pindah Kelas
+                        <i class="fas fa-arrows-up-down"></i> Naik/Pindah Kelas
                     </button>
                     <button class="btn-export" id="btnHapusLulus" style="display: none; background-color: #ef4444; color: white; border: none; margin-right: 0.5rem;">
-                        <i class="fas fa-user-slash"></i> Hapus Lulus
+                        <i class="fas fa-user-minus"></i> Hapus Lulus
                     </button>
                     <button class="btn-export" id="btnImport" style="background-color: #10b981; color: white; border: none; margin-right: 0.5rem;">
                         <i class="fas fa-file-excel"></i> Import Excel

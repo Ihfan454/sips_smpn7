@@ -40,11 +40,11 @@
                 <!-- Navigation Tabs (Left Sidebar) -->
                 <div class="settings-sidebar">
                     <button class="tab-btn active" data-tab="profile">
-                        <i class="fas fa-user-circle"></i>
+                        <i class="fas fa-id-badge"></i>
                         <span>Profil Saya</span>
                     </button>
                     <button class="tab-btn" data-tab="password">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-key"></i>
                         <span>Keamanan / Sandi</span>
                     </button>
                     @if(auth()->user()->isAdminBK())
@@ -74,7 +74,7 @@
 
                     <!-- Tab 1: Profil Saya -->
                     <div class="tab-panel active" id="tab-profile">
-                        <h3 class="page-heading"><i class="fas fa-user-edit"></i> Edit Profil Saya</h3>
+                        <h3 class="page-heading"><i class="fas fa-user-pen"></i> Edit Profil Saya</h3>
                         <p class="page-subtitle">Ubah data informasi pribadi dan foto profil Anda di sini.</p>
 
                         <form action="{{ route('pengaturan.profile') }}" method="POST" enctype="multipart/form-data">
@@ -130,7 +130,7 @@
                                     <div class="form-group">
                                         <label for="ni_pppk">NI PPPK <small class="text-muted">(Opsional)</small></label>
                                         <input type="text" class="form-control" id="ni_pppk" name="ni_pppk" value="{{ old('ni_pppk', $user->ni_pppk) }}" placeholder="18 digit NI PPPK" maxlength="20">
-                                        @error('ni_pppk') <span class="text-danger">{{ $message }}</span> @enderror
+                                        @error('ni_pppk') <span class="text-danger">{{ $user->ni_pppk }}</span> @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -149,7 +149,7 @@
                             </div>
 
                             <button type="submit" class="btn-save">
-                                <i class="fas fa-save"></i> Simpan Profil
+                                <i class="fas fa-floppy-disk"></i> Simpan Profil
                             </button>
                         </form>
                     </div>
@@ -193,7 +193,7 @@
                     @if(auth()->user()->isAdminBK())
                     <!-- Tab 3: Pengaturan Instansi Sekolah -->
                     <div class="tab-panel" id="tab-aplikasi">
-                        <h3 class="page-heading"><i class="fas fa-university"></i> Identitas Sekolah / Instansi</h3>
+                        <h3 class="page-heading"><i class="fas fa-school"></i> Identitas Sekolah / Instansi</h3>
                         <p class="page-subtitle">Sesuaikan identitas sekolah yang akan tampil di kop surat cetak laporan pelanggaran.</p>
 
                         <form action="{{ route('pengaturan.aplikasi') }}" method="POST">
@@ -246,7 +246,7 @@
                             </div>
 
                             <button type="submit" class="btn-save">
-                                <i class="fas fa-save"></i> Simpan Instansi
+                                <i class="fas fa-floppy-disk"></i> Simpan Instansi
                             </button>
                         </form>
                     </div>

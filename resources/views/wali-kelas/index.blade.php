@@ -36,7 +36,7 @@
 
             <section class="section-card">
                 <div class="report-header">
-                    <h3 class="page-heading"><i class="fas fa-chalkboard-teacher"></i> Daftar Wali Kelas</h3>
+                    <h3 class="page-heading"><i class="fas fa-chalkboard-user"></i> Daftar Wali Kelas</h3>
                     <a href="{{ route('wali-kelas.create') }}" class="btn-tambah">
                         <i class="fas fa-user-plus"></i> Tambah Wali Kelas
                     </a>
@@ -44,13 +44,13 @@
 
                 @if(session('success'))
                     <div class="alert alert-success">
-                        <i class="fas fa-check-circle"></i> {{ session('success') }}
+                        <i class="fas fa-circle-check"></i> {{ session('success') }}
                     </div>
                 @endif
 
                 @if(session('error'))
                     <div class="alert alert-error">
-                        <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+                        <i class="fas fa-circle-exclamation"></i> {{ session('error') }}
                     </div>
                 @endif
 

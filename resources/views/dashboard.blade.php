@@ -44,7 +44,7 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon blue">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Total Siswa</h3>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon orange">
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <i class="fas fa-gavel"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Pelanggaran</h3>
@@ -63,12 +63,12 @@
                     <!-- Status cards removed -->
                 </div>
             </section>
-
+ 
             <!-- Charts Section -->
             <section class="charts-section">
                 <div class="chart-card">
                     <div class="chart-header">
-                        <h3><i class="fas fa-chart-bar"></i> Statistik Pelanggaran per Kategori</h3>
+                        <h3><i class="fas fa-chart-column"></i> Statistik Pelanggaran per Kategori</h3>
                         <div class="chart-actions">
                             <button class="chart-btn active" data-period="week">Minggu</button>
                             <button class="chart-btn" data-period="month">Bulan</button>
@@ -88,11 +88,11 @@
                     </div>
                 </div>
             </section>
-
+ 
             <!-- Recent Violations -->
             <section class="recent-section">
                 <div class="recent-header">
-                    <h3><i class="fas fa-clock"></i> Pelanggaran Terbaru</h3>
+                    <h3><i class="fas fa-clock-rotate-left"></i> Pelanggaran Terbaru</h3>
                     <a href="#" class="view-all">Lihat Semua →</a>
                 </div>
                 <div class="recent-table-wrapper">

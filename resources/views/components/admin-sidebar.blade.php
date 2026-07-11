@@ -18,7 +18,7 @@
 
     <nav class="sidebar-nav">
         <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <i class="fas fa-chart-pie"></i>
+            <i class="fas fa-school"></i>
             <span>Dashboard</span>
         </a>
         <a href="{{ route('data-siswa') }}" class="nav-item {{ request()->routeIs('data-siswa') ? 'active' : '' }}">
@@ -26,27 +26,27 @@
             <span>Data Siswa</span>
         </a>
         <a href="{{ route('pelanggaran') }}" class="nav-item {{ request()->routeIs('pelanggaran') ? 'active' : '' }}">
-            <i class="fas fa-exclamation-triangle"></i>
+            <i class="fas fa-gavel"></i>
             <span>Pelanggaran</span>
         </a>
         <a href="{{ route('laporan') }}" class="nav-item {{ request()->routeIs('laporan') ? 'active' : '' }}">
-            <i class="fas fa-chart-line"></i>
+            <i class="fas fa-clipboard-list"></i>
             <span>Laporan</span>
         </a>
         @if(auth()->user()->isAdminBK())
         <a href="{{ route('guru-bk.index') }}" class="nav-item {{ request()->routeIs('guru-bk.*') ? 'active' : '' }}">
-            <i class="fas fa-users"></i>
+            <i class="fas fa-user-shield"></i>
             <span>Manajemen User</span>
         </a>
         @endif
         @if(auth()->user()->isAdminBK() || auth()->user()->isGuruBK())
         <a href="{{ route('wali-kelas.index') }}" class="nav-item {{ request()->routeIs('wali-kelas.*') ? 'active' : '' }}">
-            <i class="fas fa-chalkboard-teacher"></i>
+            <i class="fas fa-chalkboard-user"></i>
             <span>Data Wali Kelas</span>
         </a>
         @endif
         <a href="{{ route('pengaturan') }}" class="nav-item {{ request()->routeIs('pengaturan') ? 'active' : '' }}">
-            <i class="fas fa-cog"></i>
+            <i class="fas fa-gears"></i>
             <span>Pengaturan</span>
         </a>
     </nav>

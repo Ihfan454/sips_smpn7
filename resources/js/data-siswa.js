@@ -50,10 +50,10 @@ function renderTable() {
             <td>
                 ${window.userCanCRUD ? `
                 <button class="btn-edit" onclick="editSiswa(${siswa.id})">
-                    <i class="fas fa-edit"></i>
+                    <i class="fas fa-pen-to-square"></i>
                 </button>
                 <button class="btn-delete" onclick="deleteSiswa(${siswa.id})">
-                    <i class="fas fa-trash"></i>
+                    <i class="fas fa-trash-can"></i>
                 </button>
                 ` : '<span style="color:#94a3b8;font-size:0.75rem;">Read Only</span>'}
             </td>

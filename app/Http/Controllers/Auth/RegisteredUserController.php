@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
+use App\Models\Siswa;
+use App\Models\Kelas;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -20,7 +22,11 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $siswaCount = Siswa::count();
+        $waliKelasCount = \App\Models\WaliKelas::count();
+        $kelasCount = Kelas::count();
+
+        return view('auth.register', compact('siswaCount', 'waliKelasCount', 'kelasCount'));
     }
 
     /**
@@ -33,15 +39,17 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'nuptk' => ['nullable', 'string', 'size:16', 'unique:'.User::class], // Tambahkan validasi NUPTK
+            'nip' => ['nullable', 'string', 'max:20', 'unique:'.User::class], 
+            'ni_pppk' => ['nullable', 'string', 'max:20', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'nuptk' => $request->nuptk, // Tambahkan NUPTK
-            'password' => Hash::make($request->password),
+            'nip' => $request->nip,
+            'ni_pppk' => $request->ni_pppk,
+            'password' => $request->password,
         ]);
 
         event(new Registered($user));

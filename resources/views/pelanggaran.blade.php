@@ -32,7 +32,7 @@
                     </div>
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Cari...">
+                        <input type="text" id="searchInput" placeholder="Cari...">
                     </div>
                 </div>
             </header>
@@ -80,7 +80,7 @@
                                         {{ $item->kategori ?? '-' }}
                                     </span>
                                 </td>
-                                <td>{{ $item->poin ?? 0 }}</td>
+                                <td style="color: #ef4444; font-weight: 700;">+{{ $item->poin ?? 0 }}</td>
                                 @if(auth()->user()->isAdminBK() || auth()->user()->isGuruBK())
                                 <td class="text-center">
                                     <a href="{{ route('pelanggaran.edit', $item->id ?? 1) }}" class="btn-action btn-edit">

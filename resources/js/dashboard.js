@@ -6,7 +6,7 @@
 import './bootstrap';
 import { initNotifications } from './notifications';
 
-const statusLabel = { selesai: 'Selesai', proses: 'Proses BK' };
+// Status labels removed
 
 let chartData = { by_jenis: [], by_kategori: { ringan: 0, sedang: 0, berat: 0 } };
 let mainChart = null;
@@ -38,8 +38,6 @@ async function loadStats() {
         const { data } = await window.axios.get('/api/dashboard/stats');
         animateNumber('totalSiswa', data.total_siswa);
         animateNumber('totalPelanggaran', data.total_pelanggaran);
-        animateNumber('totalSelesai', data.total_selesai);
-        animateNumber('totalProses', data.total_proses);
     } catch (error) {
         console.error('Gagal memuat statistik:', error);
     }
@@ -54,7 +52,7 @@ async function loadRecentTable() {
         tbody.innerHTML = '';
 
         if (data.data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#94a3b8;">Belum ada data pelanggaran</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#94a3b8;">Belum ada data pelanggaran</td></tr>';
             return;
         }
 
@@ -69,13 +67,12 @@ async function loadRecentTable() {
                 <td><span class="badge-kategori ${badgeColor[item.kategori] || ''}">${item.kategori}</span></td>
                 <td>${item.poin}</td>
                 <td>${item.tanggal}</td>
-                <td><span class="badge-status ${item.status}">${statusLabel[item.status] || item.status}</span></td>
             `;
             tbody.appendChild(tr);
         });
     } catch (error) {
         console.error('Gagal memuat pelanggaran terbaru:', error);
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#ef4444;">Gagal memuat data</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#ef4444;">Gagal memuat data</td></tr>';
     }
 }
 
@@ -94,9 +91,12 @@ function renderMainChart() {
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
-    const sorted = [...chartData.by_jenis].sort((a, b) => b.frekuensi - a.frekuensi).slice(0, 6);
-    const labels = sorted.map(v => v.nama.length > 15 ? v.nama.slice(0, 14) + '...' : v.nama);
-    const values = sorted.map(v => v.frekuensi);
+    const labels = ['Ringan', 'Sedang', 'Berat'];
+    const values = [
+        chartData.by_kategori.ringan || 0,
+        chartData.by_kategori.sedang || 0,
+        chartData.by_kategori.berat || 0
+    ];
 
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const textColor = isDark ? '#94a3b8' : '#64748b';
@@ -112,12 +112,9 @@ function renderMainChart() {
                 label: 'Frekuensi Pelanggaran',
                 data: values,
                 backgroundColor: [
-                    'rgba(59, 130, 246, 0.8)',
-                    'rgba(99, 102, 241, 0.8)',
-                    'rgba(139, 92, 246, 0.8)',
-                    'rgba(245, 158, 11, 0.8)',
-                    'rgba(239, 68, 68, 0.8)',
-                    'rgba(16, 185, 129, 0.8)',
+                    'rgba(16, 185, 129, 0.8)', // Ringan - Green
+                    'rgba(245, 158, 11, 0.8)', // Sedang - Yellow
+                    'rgba(239, 68, 68, 0.8)'   // Berat - Red
                 ],
                 borderRadius: 8,
                 barPercentage: 0.7,

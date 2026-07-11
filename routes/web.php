@@ -6,13 +6,29 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\GuruBKController;
+use App\Http\Controllers\WaliKelasController;
 use App\Http\Controllers\PengaturanController;
 use Illuminate\Support\Facades\Route;
-// Tambahkan use model Siswa agar lebih rapi (Opsional, tapi best practice)
 use App\Models\Siswa;
+use App\Models\Pelanggaran;
+use App\Models\Kelas;
 
 Route::get('/', function () {
-    return view('welcome');
+    $totalSiswa = Siswa::count();
+    $totalPelanggaran = Pelanggaran::count();
+    
+    // Tren Pelanggaran: jumlah pelanggaran bulan ini
+    $trenPelanggaran = Pelanggaran::whereMonth('tanggal_pelanggaran', now()->month)
+        ->whereYear('tanggal_pelanggaran', now()->year)
+        ->count();
+
+    // Kelas Tertib: jumlah kelas yang tidak memiliki pelanggaran di bulan ini
+    $kelasTertib = Kelas::whereDoesntHave('siswas.pelanggarans', function ($q) {
+        $q->whereMonth('tanggal_pelanggaran', now()->month)
+          ->whereYear('tanggal_pelanggaran', now()->year);
+    })->count();
+
+    return view('welcome', compact('totalSiswa', 'totalPelanggaran', 'trenPelanggaran', 'kelasTertib'));
 });
 
 // Dashboard
@@ -43,14 +59,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/pelanggaran/create', [PelanggaranController::class, 'create'])->name('pelanggaran.create');
 
         // 3. Menampilkan form edit pelanggaran
-        Route::get('/pelanggaran/{id}/edit', function ($id) {
-            return "Ini halaman untuk edit pelanggaran ID: " . $id;
-        })->name('pelanggaran.edit');
+        Route::get('/pelanggaran/{id}/edit', [PelanggaranController::class, 'edit'])->name('pelanggaran.edit');
+
+        // 3.5. Memproses update data pelanggaran
+        Route::put('/pelanggaran/{id}', [PelanggaranController::class, 'update'])->name('pelanggaran.update');
 
         // 4. Proses hapus pelanggaran
-        Route::delete('/pelanggaran/{id}', function ($id) {
-            // Nantinya diisi logika hapus data
-        })->name('pelanggaran.destroy');
+        Route::delete('/pelanggaran/{id}', [PelanggaranController::class, 'destroy'])->name('pelanggaran.destroy');
 
         // 5. Proses menyimpan data pelanggaran baru (Pintu Penerima POST)
         Route::post('/pelanggaran', [PelanggaranController::class, 'store'])->name('pelanggaran.store');
@@ -59,9 +74,25 @@ Route::middleware('auth')->group(function () {
     // 6. Halaman Laporan Pelanggaran (Semua role bisa lihat, Wali Kelas ter-scope)
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 
+    Route::get('/test-hash', function() {
+        $u = new \App\Models\User();
+        $rawHash = \Illuminate\Support\Facades\Hash::make('password123');
+        $u->password = $rawHash; // Assign it to trigger the cast
+        return response()->json([
+            'raw_hash' => $rawHash,
+            'model_hash' => $u->password,
+            'is_double_hashed' => $rawHash !== $u->password
+        ]);
+    });
+
     // 7. Manajemen Guru / Pengguna (Hanya Admin BK)
     Route::middleware('role:admin_bk')->group(function () {
         Route::resource('guru-bk', GuruBKController::class);
+    });
+
+    // 7.5 Manajemen Wali Kelas (Admin BK & Guru BK)
+    Route::middleware('role:admin_bk,guru_bk')->group(function () {
+        Route::resource('wali-kelas', WaliKelasController::class);
     });
 
     // 8. Pengaturan Lengkap

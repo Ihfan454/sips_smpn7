@@ -55,14 +55,15 @@ class PengaturanController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'nuptk' => 'nullable|string|size:16|unique:users,nuptk,' . $user->id,
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'nip' => 'nullable|string|max:20|unique:users,nip,' . $user->id,
+            'ni_pppk' => 'nullable|string|max:20|unique:users,ni_pppk,' . $user->id,
             'no_hp' => 'nullable|string|max:20',
             'alamat' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
         ]);
 
-        $data = $request->only(['name', 'email', 'nuptk', 'no_hp', 'alamat']);
+        $data = $request->only(['name', 'email', 'nip', 'ni_pppk', 'no_hp', 'alamat']);
 
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');

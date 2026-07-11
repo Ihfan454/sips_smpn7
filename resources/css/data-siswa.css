@@ -76,29 +76,19 @@ body {
 }
 
 .brand-icon {
-    width: 40px;
-    /* Ukuran kotak logo */
-    height: 40px;
-    /* Ukuran kotak logo */
-    background: rgba(255, 255, 255, 0.12);
-    border-radius: 10px;
-    /* Lebih kecil dari sebelumnya */
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     flex-shrink: 0;
-    padding: 4px;
-    /* Padding agar logo tidak mepet */
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .brand-logo {
-    width: 100%;
-    height: 100%;
+    width: 50px;
+    height: 50px;
     object-fit: contain;
-    /* Menjaga proporsi logo */
-    border-radius: 6px;
 }
 
 .brand-text span {

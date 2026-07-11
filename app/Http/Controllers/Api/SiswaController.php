@@ -13,15 +13,7 @@ class SiswaController extends Controller
     {
         $query = Siswa::withSum('pelanggarans as total_poin', 'poin');
 
-        // Batasi Wali Kelas agar hanya melihat kelas yang diampunya
-        if (auth()->user()->isWaliKelas()) {
-            if (auth()->user()->class_id) {
-                $query->where('class_id', auth()->user()->class_id);
-            } else {
-                // Jika wali kelas tidak punya kelas, kembalikan kosong
-                return response()->json(['data' => []]);
-            }
-        }
+
 
         if ($request->filled('kelas') && $request->kelas !== 'all') {
             $query->where('kelas', $request->kelas);
@@ -49,25 +41,11 @@ class SiswaController extends Controller
     {
         $query = Siswa::query();
         
-        // Batasi Wali Kelas
-        if (auth()->user()->isWaliKelas()) {
-            if (auth()->user()->class_id) {
-                $query->where('class_id', auth()->user()->class_id);
-            } else {
-                return response()->json([
-                    'total' => 0,
-                    'aktif' => 0,
-                    'nonaktif' => 0,
-                    'total_kelas' => 0,
-                ]);
-            }
-        }
+
 
         $siswas = $query->get();
         
-        $totalKelas = auth()->user()->isWaliKelas()
-            ? (auth()->user()->class_id ? 1 : 0)
-            : \App\Models\Kelas::count();
+        $totalKelas = \App\Models\Kelas::count();
 
         return response()->json([
             'total' => $siswas->count(),
@@ -82,14 +60,7 @@ class SiswaController extends Controller
      */
     public function kelas(): JsonResponse
     {
-        if (auth()->user()->isWaliKelas()) {
-            if (auth()->user()->class_id) {
-                $kelasName = auth()->user()->kelas ? auth()->user()->kelas->nama : null;
-                $kelas = $kelasName ? [$kelasName] : [];
-                return response()->json(['data' => $kelas]);
-            }
-            return response()->json(['data' => []]);
-        }
+
 
         $kelas = \App\Models\Kelas::pluck('nama')->toArray();
         sort($kelas);
@@ -122,7 +93,7 @@ class SiswaController extends Controller
         $validated['is_active'] = $request->boolean('is_active', true);
         
         // Cari wali kelas yang sesuai kelasnya
-        $wali = \App\Models\GuruKelas::where('kelas_wali', $request->kelas)->first();
+        $wali = \App\Models\WaliKelas::where('kelas_wali', $request->kelas)->first();
         $validated['wali_kelas_id'] = $wali ? $wali->id : null;
 
         $siswa = Siswa::create($validated);
@@ -157,7 +128,7 @@ class SiswaController extends Controller
         $validated['is_active'] = $request->boolean('is_active', true);
         
         // Cari wali kelas yang sesuai kelasnya
-        $wali = \App\Models\GuruKelas::where('kelas_wali', $request->kelas)->first();
+        $wali = \App\Models\WaliKelas::where('kelas_wali', $request->kelas)->first();
         $validated['wali_kelas_id'] = $wali ? $wali->id : null;
 
         $siswa->update($validated);

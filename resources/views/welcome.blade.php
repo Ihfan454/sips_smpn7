@@ -37,7 +37,7 @@
     <nav class="nav-container">
         <a href="{{ url('/') }}" class="logo">
             <div class="logo-icon">
-                <img src="{{ asset('images/logo-smp.svg') }}" alt="Logo SMP Negeri 7 Jember" class="logo-image">
+                <img src="{{ asset('images/logo-baru.png') }}" alt="Logo SMP Negeri 7 Jember" class="logo-image">
             </div>
             <div class="logo-text">
                 <span>SMP Negeri 7 Jember</span>
@@ -59,10 +59,6 @@
             @else
                 <a href="{{ route('login') }}" class="btn-login">
                     <i class="fas fa-sign-in-alt mr-2"></i> Login
-                </a>
-
-                <a href="{{ route('register') }}" class="btn-register">
-                    <i class="fas fa-user-plus mr-2"></i> Register
                 </a>
             @endauth
         </div>
@@ -87,7 +83,7 @@
                     @auth
                         <a href="{{ url('/dashboard') }}" class="btn-primary">Dashboard <i class="fas fa-arrow-right"></i></a>
                     @else
-                        <a href="{{ route('register') }}" class="btn-primary">Akses Sistem <i class="fas fa-arrow-right"></i></a>
+                        <a href="{{ route('login') }}" class="btn-primary">Akses Sistem <i class="fas fa-arrow-right"></i></a>
                     @endauth
                     <a href="#statistics" class="btn-secondary"><i class="fas fa-chart-line"></i> Lihat Statistik</a>
                 </div>
@@ -166,22 +162,22 @@
 
         <!-- Statistics Section -->
         <div id="statistics" class="stats-grid">
-            <div class="stat-card" data-target="892">
+            <div class="stat-card" data-target="{{ $totalSiswa }}">
                 <i class="fas fa-users"></i>
                 <div class="stat-number">0</div>
                 <p>Total Siswa</p>
             </div>
-            <div class="stat-card" data-target="127">
+            <div class="stat-card" data-target="{{ $totalPelanggaran }}">
                 <i class="fas fa-exclamation-triangle"></i>
                 <div class="stat-number">0</div>
                 <p>Total Pelanggaran</p>
             </div>
-            <div class="stat-card" data-target="32">
+            <div class="stat-card" data-target="{{ $trenPelanggaran }}">
                 <i class="fas fa-chart-line"></i>
                 <div class="stat-number">0</div>
                 <p>Tren Pelanggaran ↓</p>
             </div>
-            <div class="stat-card" data-target="15">
+            <div class="stat-card" data-target="{{ $kelasTertib }}">
                 <i class="fas fa-trophy"></i>
                 <div class="stat-number">0</div>
                 <p>Kelas Tertib</p>
@@ -239,23 +235,13 @@
             </div>
         </div>
 
-        <!-- CTA Section -->
-        <div class="cta-section">
-            <div class="cta-card">
-                <i class="fas fa-chalkboard-user"></i>
-                <h2>Akses Sistem Pelanggaran</h2>
-                <p>Login untuk melihat data pelanggaran, rekap poin, dan laporan perkembangan siswa.</p>
-                <div class="cta-buttons">
-                    <a href="{{ route('register') }}" class="btn-cta-secondary">Registrasi Akun <i class="fas fa-user-plus"></i></a>
-                </div>
-            </div>
-        </div>
+
     </main>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="social-icons">
-            <i class="fab fa-instagram"></i><i class="fab fa-facebook"></i><i class="fab fa-youtube"></i>
+            <a href="https://www.instagram.com/stuju_bisa?igsh=MTBjaHFocGhvZjI2bQ==" target="_blank" rel="noopener noreferrer" style="text-decoration: none;"><i class="fab fa-instagram"></i></a><a href="https://www.tiktok.com/@stuju.jember?_r=1&_t=ZS-97td3kAMTwY" target="_blank" rel="noopener noreferrer" style="text-decoration: none;"><i class="fab fa-tiktok"></i></a><a href="https://youtube.com/@smpnegeri7jember?si=91QiITvL-Izi5QRo" target="_blank" rel="noopener noreferrer" style="text-decoration: none;"><i class="fab fa-youtube"></i></a>
         </div>
         <p>© {{ date('Y') }} SMP Negeri 7 Jember - Sistem Informasi Pelanggaran Siswa</p>
         <p class="address">Jl. Cendrawasih No.22, Puring, Slawu, Kec. Patrang, Kabupaten Jember, Jawa Timur 68118</p>

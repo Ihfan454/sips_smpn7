@@ -43,6 +43,7 @@
                     Periode: {{ \Carbon\Carbon::parse($tanggal_mulai)->format('d/m/Y') }} s/d {{ \Carbon\Carbon::parse($tanggal_selesai)->format('d/m/Y') }}
                     @if($kelas_selected) | Kelas: {{ $kelas_selected }} @endif
                     @if($kategori_selected) | Kategori: {{ ucfirst($kategori_selected) }} @endif
+                    @if($search) | Pencarian: "{{ $search }}" @endif
                 </p>
             </div>
 
@@ -50,6 +51,11 @@
             <section class="filter-section">
                 <form method="GET" action="{{ route('laporan') }}">
                     <div class="filter-grid">
+                        <div class="filter-group">
+                            <label for="search">Cari Nama / NIS</label>
+                            <input type="text" class="filter-control" id="search" name="search" value="{{ $search }}" placeholder="Nama / NIS siswa...">
+                        </div>
+
                         <div class="filter-group">
                             <label for="tanggal_mulai">Tanggal Mulai</label>
                             <input type="date" class="filter-control" id="tanggal_mulai" name="tanggal_mulai" value="{{ $tanggal_mulai }}">
@@ -81,7 +87,7 @@
                         </div>
 
                         <div class="filter-group filter-actions">
-                            <button type="submit" class="btn-filter">
+                            <button type="submit" class="btn btn-filter">
                                 <i class="fas fa-filter"></i> Filter
                             </button>
                             <a href="{{ route('laporan') }}" class="btn-reset">
@@ -152,10 +158,10 @@
                                 <th>Tanggal</th>
                                 <th>Nama Siswa</th>
                                 <th>Kelas</th>
+                                <th>Wali Kelas</th>
                                 <th>Bentuk Pelanggaran</th>
                                 <th>Kategori</th>
                                 <th>Poin</th>
-                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -165,6 +171,7 @@
                                 <td>{{ $item->tanggal_pelanggaran ? $item->tanggal_pelanggaran->format('d/m/Y') : '-' }}</td>
                                 <td>{{ $item->siswa->nama_lengkap ?? 'Data Tidak Ditemukan' }}</td>
                                 <td>{{ $item->siswa->kelas ?? '-' }}</td>
+                                <td>{{ $item->siswa->waliKelas->nama_lengkap ?? '-' }}</td>
                                 <td>{{ $item->jenis_pelanggaran ?? '-' }}</td>
                                 <td>
                                     <span class="badge-kategori badge-kategori-{{ $item->kategori ?? 'ringan' }}">
@@ -172,11 +179,6 @@
                                     </span>
                                 </td>
                                 <td class="text-poin">+{{ $item->poin ?? 0 }}</td>
-                                <td>
-                                    <span class="{{ $item->status == 'selesai' ? 'status-selesai' : 'status-proses' }}">
-                                        {{ $item->status ?? '-' }}
-                                    </span>
-                                </td>
                             </tr>
                             @empty
                             <tr>

@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class GuruKelas extends Model
+class WaliKelas extends Model
 {
-    protected $table = 'guru_kelas';
+    protected $table = 'wali_kelas';
 
     protected $fillable = [
-        'nuptk',
+        'nip',
+        'ni_pppk',
         'nama_lengkap',
-        'mata_pelajaran',
         'kelas_wali',
         'no_hp',
         'alamat',
@@ -33,11 +33,6 @@ class GuruKelas extends Model
 
     public function pelanggarans(): HasMany
     {
-        return $this->hasMany(Pelanggaran::class, 'guru_kelas_id');
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
+        return $this->hasMany(Pelanggaran::class, 'wali_kelas_id');
     }
 }

@@ -8,7 +8,7 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
         <div class="brand-icon">
-            <img src="{{ asset('images/logo-smp.svg') }}" alt="Logo SMP Negeri 7 Jember" class="brand-logo">
+            <img src="{{ asset('images/logo-baru.png') }}" alt="Logo SMP Negeri 7 Jember" class="brand-logo">
         </div>
         <div class="brand-text">
             <span>SMPN 7 Jember</span>
@@ -37,6 +37,12 @@
         <a href="{{ route('guru-bk.index') }}" class="nav-item {{ request()->routeIs('guru-bk.*') ? 'active' : '' }}">
             <i class="fas fa-users"></i>
             <span>Manajemen User</span>
+        </a>
+        @endif
+        @if(auth()->user()->isAdminBK() || auth()->user()->isGuruBK())
+        <a href="{{ route('wali-kelas.index') }}" class="nav-item {{ request()->routeIs('wali-kelas.*') ? 'active' : '' }}">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span>Data Wali Kelas</span>
         </a>
         @endif
         <a href="{{ route('pengaturan') }}" class="nav-item {{ request()->routeIs('pengaturan') ? 'active' : '' }}">
@@ -75,10 +81,7 @@
                     Admin BK
                 @elseif(auth()->user()->isGuruBK())
                     Guru BK
-                @elseif(auth()->user()->isWaliKelas())
-                    Wali Kelas {{ auth()->user()->kelas ? auth()->user()->kelas->nama : '' }}
-                @elseif(auth()->user()->isKepalaSekolah())
-                    Kepala Sekolah
+
                 @else
                     {{ auth()->user()->jabatan ?? 'Pengguna' }}
                 @endif

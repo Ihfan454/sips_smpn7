@@ -38,7 +38,7 @@ class Siswa extends Model
 
     public function waliKelas(): BelongsTo
     {
-        return $this->belongsTo(GuruKelas::class, 'wali_kelas_id');
+        return $this->belongsTo(WaliKelas::class, 'wali_kelas_id');
     }
 
     public function pelanggarans(): HasMany

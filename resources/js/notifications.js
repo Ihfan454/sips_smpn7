@@ -13,6 +13,7 @@ const POLL_INTERVAL = 30000; // 30 detik
 
 let latestId = 0;        // ID pelanggaran tertinggi yang sudah diketahui
 let totalToday = 0;      // Total pelanggaran hari ini
+let unreadCount = 0;     // Jumlah pelanggaran belum dibaca
 let pollingTimer = null;
 let dropdownOpen = false;
 
@@ -253,11 +254,28 @@ async function fetchTodayNotifications(isIncremental = false) {
         // Update total & badge
         if (isFirstLoad || !isIncremental) {
             totalToday = res.count || 0;
+
+            // Hitung unreadCount berdasarkan localStorage
+            const lastSeenId = localStorage.getItem('sips_last_seen_id');
+            if (lastSeenId === null) {
+                unreadCount = res.count || 0;
+            } else {
+                const parsedLastSeen = parseInt(lastSeenId, 10);
+                unreadCount = (res.data || []).filter(item => item.id > parsedLastSeen).length;
+            }
         } else if (hasNew) {
             totalToday += res.data.length;
+            if (dropdownOpen) {
+                unreadCount = 0;
+                if (res.latest_id) {
+                    localStorage.setItem('sips_last_seen_id', res.latest_id);
+                }
+            } else {
+                unreadCount += res.data.length;
+            }
         }
 
-        updateBadge(totalToday);
+        updateBadge(unreadCount);
 
         // Update latest_id
         if (res.latest_id && res.latest_id > latestId) {
@@ -454,6 +472,14 @@ export function initNotifications() {
         if (!isOpen) {
             dropdown.style.display = 'block';
             dropdownOpen = true;
+
+            // Reset badge count to 0 and save latestId as read
+            unreadCount = 0;
+            updateBadge(unreadCount);
+            if (latestId > 0) {
+                localStorage.setItem('sips_last_seen_id', latestId);
+            }
+
             // Reload isi terbaru saat dibuka
             await reloadDropdownContent(list);
             const countEl = document.getElementById('sips-notif-count');

@@ -44,10 +44,12 @@
                         <i class="fas fa-shield-alt"></i>
                         <span>Keamanan / Sandi</span>
                     </button>
+                    @if(auth()->user()->isAdminBK())
                     <button class="tab-btn" data-tab="aplikasi">
                         <i class="fas fa-school"></i>
                         <span>Instansi Sekolah</span>
                     </button>
+                    @endif
                 </div>
 
                 <!-- Settings Formss (Right Content) -->
@@ -102,9 +104,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="nuptk">NUPTK <small class="text-muted">(16 Digit - Opsional)</small></label>
-                                        <input type="text" class="form-control" id="nuptk" name="nuptk" value="{{ old('nuptk', $user->nuptk) }}" placeholder="16 digit NUPTK" maxlength="16">
-                                        @error('nuptk') <span class="text-danger">{{ $message }}</span> @enderror
+                                        <label for="nip">NIP <small class="text-muted">(PNS - Opsional)</small></label>
+                                        <input type="text" class="form-control" id="nip" name="nip" value="{{ old('nip', $user->nip) }}" placeholder="18 digit NIP" maxlength="20">
+                                        @error('nip') <span class="text-danger">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ni_pppk">NI PPPK <small class="text-muted">(Opsional)</small></label>
+                                        <input type="text" class="form-control" id="ni_pppk" name="ni_pppk" value="{{ old('ni_pppk', $user->ni_pppk) }}" placeholder="18 digit NI PPPK" maxlength="20">
+                                        @error('ni_pppk') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -164,6 +171,7 @@
                         </form>
                     </div>
 
+                    @if(auth()->user()->isAdminBK())
                     <!-- Tab 3: Pengaturan Instansi Sekolah -->
                     <div class="tab-panel" id="tab-aplikasi">
                         <h3 class="page-heading"><i class="fas fa-university"></i> Identitas Sekolah / Instansi</h3>
@@ -223,6 +231,7 @@
                             </button>
                         </form>
                     </div>
+                    @endif
                 </div>
             </div>
         </main>

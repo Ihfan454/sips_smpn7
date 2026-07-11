@@ -36,10 +36,6 @@
                         <i class="fas fa-bell"></i>
                         <span class="badge">0</span>
                     </div>
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Cari...">
-                    </div>
                 </div>
             </header>
 
@@ -70,30 +66,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>Selesai Ditangani</h3>
-                            <p class="stat-number" id="totalSelesai">0</p>
-                            <span class="stat-change positive">
-                                <i class="fas fa-arrow-up"></i> 15% dari bulan lalu
-                            </span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon purple">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>Proses BK</h3>
-                            <p class="stat-number" id="totalProses">0</p>
-                            <span class="stat-change neutral">
-                                <i class="fas fa-minus"></i> Stabil
-                            </span>
-                        </div>
-                    </div>
+                    <!-- Status cards removed -->
                 </div>
             </section>
 
@@ -138,7 +111,6 @@
                                 <th>Kategori</th>
                                 <th>Poin</th>
                                 <th>Tanggal</th>
-                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="recentTableBody">

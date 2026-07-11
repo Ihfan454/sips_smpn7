@@ -13,42 +13,21 @@ class DashboardController extends Controller
 {
     public function stats(): JsonResponse
     {
-        $isWali = auth()->user()->isWaliKelas();
-        $classId = auth()->user()->class_id;
-
         $siswaQuery = Siswa::query();
         $pelanggaranQuery = Pelanggaran::query();
-
-        if ($isWali) {
-            $siswaQuery->where('class_id', $classId);
-            $pelanggaranQuery->whereHas('siswa', fn($q) => $q->where('class_id', $classId));
-        }
 
         $totalSiswa = $siswaQuery->count();
         $totalPelanggaran = $pelanggaranQuery->count();
         
-        // clone query to prevent cumulative condition
-        $totalSelesai = (clone $pelanggaranQuery)->where('status', 'selesai')->count();
-        $totalProses = (clone $pelanggaranQuery)->where('status', 'proses')->count();
-
         return response()->json([
             'total_siswa' => $totalSiswa,
             'total_pelanggaran' => $totalPelanggaran,
-            'total_selesai' => $totalSelesai,
-            'total_proses' => $totalProses,
         ]);
     }
 
     public function recent(): JsonResponse
     {
-        $isWali = auth()->user()->isWaliKelas();
-        $classId = auth()->user()->class_id;
-
         $query = Pelanggaran::with('siswa');
-
-        if ($isWali) {
-            $query->whereHas('siswa', fn($q) => $q->where('class_id', $classId));
-        }
 
         $pelanggarans = $query->latest('tanggal_pelanggaran')
             ->latest('created_at')
@@ -61,7 +40,6 @@ class DashboardController extends Controller
                 'kategori' => ucfirst($p->kategori),
                 'poin' => $p->poin,
                 'tanggal' => $p->tanggal_pelanggaran->format('d/m/Y'),
-                'status' => $p->status,
             ]);
 
         return response()->json(['data' => $pelanggarans]);
@@ -74,15 +52,8 @@ class DashboardController extends Controller
      */
     public function notificationsToday(Request $request): JsonResponse
     {
-        $isWali = auth()->user()->isWaliKelas();
-        $classId = auth()->user()->class_id;
-
         $query = Pelanggaran::with('siswa')
             ->whereDate('created_at', today());
-
-        if ($isWali) {
-            $query->whereHas('siswa', fn($q) => $q->where('class_id', $classId));
-        }
 
         $query->latest('id');
 
@@ -104,10 +75,6 @@ class DashboardController extends Controller
 
         $latestQuery = Pelanggaran::whereDate('created_at', today());
         $countQuery = Pelanggaran::whereDate('created_at', today());
-        if ($isWali) {
-            $latestQuery->whereHas('siswa', fn($q) => $q->where('class_id', $classId));
-            $countQuery->whereHas('siswa', fn($q) => $q->where('class_id', $classId));
-        }
 
         $latestId = $latestQuery->max('id') ?? 0;
         $totalToday = $countQuery->count();
@@ -121,16 +88,8 @@ class DashboardController extends Controller
 
     public function charts(): JsonResponse
     {
-        $isWali = auth()->user()->isWaliKelas();
-        $classId = auth()->user()->class_id;
-
         $jenisQuery = Pelanggaran::query();
         $kategoriQuery = Pelanggaran::query();
-
-        if ($isWali) {
-            $jenisQuery->whereHas('siswa', fn($q) => $q->where('class_id', $classId));
-            $kategoriQuery->whereHas('siswa', fn($q) => $q->where('class_id', $classId));
-        }
 
         $byJenis = $jenisQuery->select('jenis_pelanggaran', DB::raw('count(*) as frekuensi'))
             ->groupBy('jenis_pelanggaran')

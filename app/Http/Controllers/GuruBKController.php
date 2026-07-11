@@ -25,12 +25,12 @@ class GuruBKController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'nuptk' => 'nullable|string|size:16|unique:users',
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
+            'nip' => 'nullable|string|max:20|unique:users',
+            'ni_pppk' => 'nullable|string|max:20|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|string|in:admin_bk,guru_bk,wali_kelas,kepala_sekolah',
-            'class_id' => 'nullable|required_if:role,wali_kelas|exists:kelas,id',
-            'jabatan' => 'required|string|max:255',
+            'role' => 'required|string|in:admin_bk,guru_bk',
+            'class_id' => 'nullable|exists:kelas,id',
             'no_hp' => 'nullable|string|max:20',
             'alamat' => 'nullable|string',
             'is_active' => 'required|boolean',
@@ -39,11 +39,12 @@ class GuruBKController extends Controller
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'nuptk' => $request->nuptk,
-            'password' => Hash::make($request->password),
+            'nip' => $request->nip,
+            'ni_pppk' => $request->ni_pppk,
+            'password' => $request->password,
             'role' => $request->role,
-            'class_id' => $request->role === 'wali_kelas' ? $request->class_id : null,
-            'jabatan' => $request->jabatan,
+            'class_id' => $request->role === 'guru_bk' ? $request->class_id : null,
+            'jabatan' => $request->role === 'admin_bk' ? 'Admin BK' : 'Guru BK',
             'no_hp' => $request->no_hp,
             'alamat' => $request->alamat,
             'is_active' => $request->is_active,
@@ -65,12 +66,12 @@ class GuruBKController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($guru->id)],
-            'nuptk' => ['nullable', 'string', 'size:16', Rule::unique('users')->ignore($guru->id)],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users')->ignore($guru->id)],
+            'nip' => ['nullable', 'string', 'max:20', Rule::unique('users')->ignore($guru->id)],
+            'ni_pppk' => ['nullable', 'string', 'max:20', Rule::unique('users')->ignore($guru->id)],
             'password' => 'nullable|string|min:8|confirmed',
-            'role' => 'required|string|in:admin_bk,guru_bk,wali_kelas,kepala_sekolah',
-            'class_id' => 'nullable|required_if:role,wali_kelas|exists:kelas,id',
-            'jabatan' => 'required|string|max:255',
+            'role' => 'required|string|in:admin_bk,guru_bk',
+            'class_id' => 'nullable|exists:kelas,id',
             'no_hp' => 'nullable|string|max:20',
             'alamat' => 'nullable|string',
             'is_active' => 'required|boolean',
@@ -79,10 +80,11 @@ class GuruBKController extends Controller
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'nuptk' => $request->nuptk,
+            'nip' => $request->nip,
+            'ni_pppk' => $request->ni_pppk,
             'role' => $request->role,
-            'class_id' => $request->role === 'wali_kelas' ? $request->class_id : null,
-            'jabatan' => $request->jabatan,
+            'class_id' => $request->role === 'guru_bk' ? $request->class_id : null,
+            'jabatan' => $request->role === 'admin_bk' ? 'Admin BK' : 'Guru BK',
             'no_hp' => $request->no_hp,
             'alamat' => $request->alamat,
             'is_active' => $request->is_active,
@@ -90,7 +92,7 @@ class GuruBKController extends Controller
 
         // Hanya update password jika diisi
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+            $data['password'] = $request->password;
         }
 
         $guru->update($data);

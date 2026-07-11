@@ -62,19 +62,28 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="nuptk">NUPTK <small class="text-muted">(16 Digit - Opsional)</small></label>
-                                <input type="text" class="form-control" id="nuptk" name="nuptk" value="{{ old('nuptk') }}" placeholder="Masukkan 16 digit NUPTK" maxlength="16">
-                                @error('nuptk') <span class="text-danger">{{ $message }}</span> @enderror
+                                <label for="nip">NIP <small class="text-muted">(PNS - Opsional)</small></label>
+                                <input type="text" class="form-control" id="nip" name="nip" value="{{ old('nip') }}" placeholder="Masukkan 18 digit NIP" maxlength="20">
+                                @error('nip') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ni_pppk">NI PPPK <small class="text-muted">(Opsional)</small></label>
+                                <input type="text" class="form-control" id="ni_pppk" name="ni_pppk" value="{{ old('ni_pppk') }}" placeholder="Masukkan 18 digit NI PPPK" maxlength="20">
+                                @error('ni_pppk') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Peran / Hak Akses <span class="text-danger" style="display:inline;">*</span></label>
                                 <select class="form-control" id="role" name="role" required onchange="toggleKelasField()">
                                     <option value="admin_bk" {{ old('role') == 'admin_bk' ? 'selected' : '' }}>Admin BK (Administrator)</option>
                                     <option value="guru_bk" {{ old('role', 'guru_bk') == 'guru_bk' ? 'selected' : '' }}>Guru BK</option>
-                                    <option value="wali_kelas" {{ old('role') == 'wali_kelas' ? 'selected' : '' }}>Wali Kelas</option>
-                                    <option value="kepala_sekolah" {{ old('role') == 'kepala_sekolah' ? 'selected' : '' }}>Kepala Sekolah</option>
+
                                 </select>
                                 @error('role') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
@@ -94,32 +103,30 @@
                                 @error('class_id') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="jabatan">Jabatan <span class="text-danger" style="display:inline;">*</span></label>
-                                <select class="form-control" id="jabatan" name="jabatan" required>
-                                    <option value="Guru BK" {{ old('jabatan') == 'Guru BK' ? 'selected' : '' }}>Guru BK / Konselor</option>
-                                    <option value="Kepala Sekolah" {{ old('jabatan') == 'Kepala Sekolah' ? 'selected' : '' }}>Kepala Sekolah</option>
-                                    <option value="Waka Kesiswaan" {{ old('jabatan') == 'Waka Kesiswaan' ? 'selected' : '' }}>Waka Kesiswaan</option>
-                                    <option value="Staf BK" {{ old('jabatan') == 'Staf BK' ? 'selected' : '' }}>Staf BK / Admin</option>
-                                </select>
-                                @error('jabatan') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="password">Password <span class="text-danger" style="display:inline;">*</span></label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Minimal 8 karakter" required>
+                                <div style="position: relative;">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Minimal 8 karakter" required>
+                                    <button type="button" class="toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748b; cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
                                 @error('password') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="password_confirmation">Konfirmasi Password <span class="text-danger" style="display:inline;">*</span></label>
-                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Ulangi password" required>
+                                <div style="position: relative;">
+                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Ulangi password" required>
+                                    <button type="button" class="toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #64748b; cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -164,18 +171,42 @@
     </div>
 
     <script>
-        function toggleKelasField() {
-            const roleSelect = document.getElementById('role');
+        document.addEventListener('DOMContentLoaded', function() {
             const kelasField = document.getElementById('kelasField');
-            if (roleSelect.value === 'wali_kelas') {
-                kelasField.style.display = 'block';
-                document.getElementById('class_id').setAttribute('required', 'required');
-            } else {
-                kelasField.style.display = 'none';
-                document.getElementById('class_id').removeAttribute('required');
+            const roleSelect = document.getElementById('role');
+
+            function toggleKelasField() {
+                if (roleSelect.value === 'guru_bk') {
+                    kelasField.style.display = 'block';
+                    document.getElementById('class_id').required = true;
+                } else {
+                    kelasField.style.display = 'none';
+                    document.getElementById('class_id').required = false;
+                    document.getElementById('class_id').value = '';
+                }
             }
-        }
-        document.addEventListener('DOMContentLoaded', toggleKelasField);
+
+            roleSelect.addEventListener('change', toggleKelasField);
+            // Jalankan saat load untuk mengecek nilai lama
+            toggleKelasField();
+
+            // Toggle Password Visibility
+            document.querySelectorAll('.toggle-password').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = this.previousElementSibling;
+                    const icon = this.querySelector('i');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        input.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>

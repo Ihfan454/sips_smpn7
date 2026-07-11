@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\GuruKelas;
 use App\Models\Pelanggaran;
 use App\Models\Siswa;
 use App\Models\User;
@@ -13,7 +12,6 @@ class PelanggaranSeeder extends Seeder
     public function run(): void
     {
         $user = User::first();
-        $guru = GuruKelas::first();
 
         if (! $user) {
             return;
@@ -41,7 +39,6 @@ class PelanggaranSeeder extends Seeder
             Pelanggaran::create([
                 'siswa_id' => $siswa->id,
                 'user_id' => $user->id,
-                'guru_kelas_id' => $guru?->id,
                 'jenis_pelanggaran' => $item['jenis'],
                 'kategori' => $item['kategori'],
                 'poin' => $item['poin'],

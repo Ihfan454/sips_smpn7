@@ -35,9 +35,9 @@
 
             <section class="section-card">
                 <div class="report-header">
-                    <h3 class="page-heading"><i class="fas fa-users-cog"></i> Daftar Akun Guru BK / Admin</h3>
-                    <a href="{{ route('guru-bk.create') }}" class="btn-tambah">
-                        <i class="fas fa-user-plus"></i> Tambah Guru BK
+                    <h3 class="page-heading"><i class="fas fa-chalkboard-teacher"></i> Daftar Wali Kelas</h3>
+                    <a href="{{ route('wali-kelas.create') }}" class="btn-tambah">
+                        <i class="fas fa-user-plus"></i> Tambah Wali Kelas
                     </a>
                 </div>
 
@@ -60,67 +60,50 @@
                                 <th style="width: 5%">No</th>
                                 <th>NIP / PPPK</th>
                                 <th>Nama Lengkap</th>
-                                <th>Email</th>
-                                <th>Peran</th>
+                                <th>Kelas Diampu</th>
                                 <th>No. HP</th>
                                 <th>Status</th>
                                 <th style="text-align: center; width: 15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($guru_bk as $index => $guru)
+                            @forelse ($wali_kelas as $index => $wali)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>
-                                    @if($guru->nip)
-                                        <span title="NIP">{{ $guru->nip }}</span> <br><small class="text-muted">(PNS)</small>
-                                    @elseif($guru->ni_pppk)
-                                        <span title="NI PPPK">{{ $guru->ni_pppk }}</span> <br><small class="text-muted">(PPPK)</small>
+                                    @if($wali->nip)
+                                        <span title="NIP">{{ $wali->nip }}</span> <br><small class="text-muted">(PNS)</small>
+                                    @elseif($wali->ni_pppk)
+                                        <span title="NI PPPK">{{ $wali->ni_pppk }}</span> <br><small class="text-muted">(PPPK)</small>
                                     @else
                                         -
                                     @endif
                                 </td>
-                                <td class="text-accent" style="font-weight: 600;">{{ $guru->name }}</td>
-                                <td>{{ $guru->email }}</td>
+                                <td class="text-accent" style="font-weight: 600;">{{ $wali->nama_lengkap }}</td>
+                                <td>{{ $wali->kelas_wali }}</td>
+                                <td>{{ $wali->no_hp ?? '-' }}</td>
                                 <td>
-                                    @if($guru->role === 'admin_bk')
-                                        Admin BK
-                                    @elseif($guru->role === 'guru_bk')
-                                        Guru BK
-
-                                    @else
-                                        {{ ucfirst(str_replace('_', ' ', $guru->role)) }}
-                                    @endif
-                                </td>
-                                <td>{{ $guru->no_hp ?? '-' }}</td>
-                                <td>
-                                    <span class="badge-status {{ $guru->is_active ? 'badge-status-aktif' : 'badge-status-nonaktif' }}">
-                                        {{ $guru->is_active ? 'Aktif' : 'Nonaktif' }}
+                                    <span class="badge-status {{ $wali->is_active ? 'badge-status-aktif' : 'badge-status-nonaktif' }}">
+                                        {{ $wali->is_active ? 'Aktif' : 'Nonaktif' }}
                                     </span>
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="{{ route('guru-bk.edit', $guru->id) }}" class="btn-action btn-edit" title="Edit Guru BK">
+                                    <a href="{{ route('wali-kelas.edit', $wali->id) }}" class="btn-action btn-edit" title="Edit Wali Kelas">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     
-                                    @if(auth()->id() !== $guru->id)
-                                    <form action="{{ route('guru-bk.destroy', $guru->id) }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('wali-kelas.destroy', $wali->id) }}" method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn-action btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus akun Guru BK ini? Tindakan ini tidak dapat dibatalkan.')" title="Hapus Guru BK">
+                                        <button class="btn-action btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus data Wali Kelas ini? Tindakan ini tidak dapat dibatalkan.')" title="Hapus Wali Kelas">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
-                                    @else
-                                    <button class="btn-action btn-disabled" title="Akun sedang digunakan" disabled>
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                    @endif
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="8" class="text-center" style="padding: 20px;">Belum ada data Guru BK yang terdaftar.</td>
+                                <td colspan="7" style="text-align: center; color: #64748b; padding: 20px;">Belum ada data Wali Kelas yang ditambahkan.</td>
                             </tr>
                             @endforelse
                         </tbody>

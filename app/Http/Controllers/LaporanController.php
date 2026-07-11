@@ -16,30 +16,12 @@ class LaporanController extends Controller
         $tanggal_selesai = $request->input('tanggal_selesai', Carbon::now()->toDateString());
         $kelas_selected = $request->input('kelas');
         $kategori_selected = $request->input('kategori');
+        $search = $request->input('search');
 
-        // Batasi Wali Kelas
-        $isWali = auth()->user()->isWaliKelas();
-        $classId = auth()->user()->class_id;
-        $kelas_name = auth()->user()->kelas ? auth()->user()->kelas->nama : null;
-
-        if ($isWali) {
-            $kelas_selected = $kelas_name;
-        }
-
-        if ($isWali) {
-            $list_kelas = collect($kelas_name ? [$kelas_name] : []);
-        } else {
-            $list_kelas = \App\Models\Kelas::orderBy('nama', 'asc')->pluck('nama');
-        }
+        $list_kelas = \App\Models\Kelas::orderBy('nama', 'asc')->pluck('nama');
 
         // Query Pelanggaran
         $query = Pelanggaran::with('siswa');
-
-        if ($isWali) {
-            $query->whereHas('siswa', function ($q) use ($classId) {
-                $q->where('class_id', $classId);
-            });
-        }
 
         // Filter Rentang Tanggal
         if ($tanggal_mulai) {
@@ -49,8 +31,8 @@ class LaporanController extends Controller
             $query->whereDate('tanggal_pelanggaran', '<=', $tanggal_selesai);
         }
 
-        // Filter Kelas (untuk non-wali kelas)
-        if (!$isWali && $kelas_selected) {
+        // Filter Kelas
+        if ($kelas_selected) {
             $query->whereHas('siswa', function ($q) use ($kelas_selected) {
                 $q->where('kelas', $kelas_selected);
             });
@@ -59,6 +41,14 @@ class LaporanController extends Controller
         // Filter Kategori
         if ($kategori_selected) {
             $query->where('kategori', $kategori_selected);
+        }
+
+        // Filter Pencarian Siswa
+        if ($search) {
+            $query->whereHas('siswa', function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                  ->orWhere('nis', 'like', "%{$search}%");
+            });
         }
 
         // Dapatkan data pelanggaran yang terfilter
@@ -82,6 +72,7 @@ class LaporanController extends Controller
             'tanggal_selesai',
             'kelas_selected',
             'kategori_selected',
+            'search',
             'stats'
         ));
     }

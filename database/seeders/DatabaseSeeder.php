@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Admin BK',
             'email' => 'admin@smpn7jember.sch.id',
-            'nuptk' => '9876543210987654',
+            'nip' => '198001012005011001',
             'password' => Hash::make('password'),
             'jabatan' => 'Guru BK',
             'role' => 'admin_bk',
@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             KategoriPelanggaranSeeder::class,
-            GuruKelasSeeder::class,
+            WaliKelasSeeder::class,
             SiswaSeeder::class,
             PelanggaranSeeder::class,
         ]);

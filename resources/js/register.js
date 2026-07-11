@@ -144,7 +144,8 @@ class FormValidation {
         this.form.addEventListener('submit', (e) => {
             const name = document.getElementById('name');
             const email = document.getElementById('email');
-            const nuptk = document.getElementById('nuptk');
+            const nip = document.getElementById('nip');
+            const ni_pppk = document.getElementById('ni_pppk');
             const password = document.getElementById('password');
             const confirm = document.getElementById('password_confirmation');
             let isValid = true;
@@ -168,11 +169,20 @@ class FormValidation {
                 isValid = false;
             }
 
-            // Validate NUPTK (opsional, jika diisi harus 16 digit angka)
-            if (nuptk.value.trim()) {
-                const nuptkPattern = /^[0-9]{16}$/;
-                if (!nuptkPattern.test(nuptk.value)) {
-                    this.showError(nuptk, 'NUPTK harus 16 digit angka');
+            // Validate NIP (opsional, jika diisi harus 18 digit angka)
+            if (nip && nip.value.trim()) {
+                const nipPattern = /^[0-9]{18}$/;
+                if (!nipPattern.test(nip.value)) {
+                    this.showError(nip, 'NIP harus 18 digit angka');
+                    isValid = false;
+                }
+            }
+
+            // Validate NI PPPK (opsional, jika diisi harus 18 digit angka)
+            if (ni_pppk && ni_pppk.value.trim()) {
+                const pppkPattern = /^[0-9]{18}$/;
+                if (!pppkPattern.test(ni_pppk.value)) {
+                    this.showError(ni_pppk, 'NI PPPK harus 18 digit angka');
                     isValid = false;
                 }
             }

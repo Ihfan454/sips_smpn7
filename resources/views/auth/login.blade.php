@@ -29,7 +29,7 @@
     <div class="splash-screen" id="splashScreen">
         <div class="splash-content">
             <div class="splash-logo-wrapper">
-                <img src="{{ asset('images/logo-smp.svg') }}" alt="Logo SMP Negeri 7 Jember" class="splash-logo" id="splashLogo">
+                <img src="{{ asset('images/logo-baru.png') }}" alt="Logo SMP Negeri 7 Jember" class="splash-logo" id="splashLogo">
             </div>
             <h2 class="splash-title">SMP Negeri 7 Jember</h2>
             <p class="splash-subtitle">Sistem Informasi Pelanggaran Siswa</p>
@@ -46,7 +46,7 @@
             <div class="school-overlay"></div>
             <div class="school-content">
                 <div class="school-icon">
-                    <img src="{{ asset('images/logo-smp.svg') }}" alt="Logo SMPN 7 Jember" class="school-logo-img">
+                    <img src="{{ asset('images/logo-baru.png') }}" alt="Logo SMPN 7 Jember" class="school-logo-img">
                 </div>
                 <h2>SMP Negeri 7 Jember</h2>
                 <p>Sistem Informasi Pelanggaran Siswa</p>
@@ -56,15 +56,15 @@
                 </div>
                 <div class="school-stats">
                     <div class="stat">
-                        <span class="stat-number">892</span>
+                        <span class="stat-number">{{ $siswaCount }}</span>
                         <span class="stat-label">Siswa</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-number">42</span>
-                        <span class="stat-label">Guru</span>
+                        <span class="stat-number">{{ $waliKelasCount ?? 0 }}</span>
+                        <span class="stat-label">Wali Kelas</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-number">15</span>
+                        <span class="stat-number">{{ $kelasCount }}</span>
                         <span class="stat-label">Kelas</span>
                     </div>
                 </div>
@@ -90,24 +90,26 @@
                 <form method="POST" action="{{ route('login') }}" id="loginForm">
                     @csrf
 
-                    <!-- Login Type Selector (Email / NISN / NUPTK) -->
+                    <input type="hidden" id="login_type" name="login_type" value="email">
+
+                    <!-- Login Type Selector (Email / NIP / NI PPPK) -->
                     <div class="input-group">
-                        <div class="login-type-selector">
+                        <div class="login-type-selector" style="grid-template-columns: repeat(3, 1fr);">
                             <button type="button" class="type-btn active" data-type="email">
                                 <i class="fas fa-envelope"></i> Email
                             </button>
-                            <button type="button" class="type-btn" data-type="nisn">
-                                <i class="fas fa-id-card"></i> NISN
+                            <button type="button" class="type-btn" data-type="nip">
+                                <i class="fas fa-id-badge"></i> NIP
                             </button>
-                            <button type="button" class="type-btn" data-type="nuptk">
-                                <i class="fas fa-chalkboard-user"></i> NUPTK
+                            <button type="button" class="type-btn" data-type="ni_pppk">
+                                <i class="fas fa-id-card"></i> NI PPPK
                             </button>
                         </div>
                         
                         <div class="input-field-wrapper">
                             <i class="fas fa-user input-icon"></i>
                             <input type="text" id="login_identifier" name="email" class="modern-input" 
-                                   placeholder="Email / NISN / NUPTK" value="{{ old('email') }}" required autofocus>
+                                   placeholder="Email / NIP / PPPK" value="{{ old('email') }}" required autofocus>
                         </div>
                         @error('email')
                             <div class="input-error">{{ $message }}</div>
@@ -131,10 +133,7 @@
 
                     <!-- Options Row -->
                     <div class="options-row">
-                        <label class="checkbox-modern">
-                            <input type="checkbox" name="remember" id="remember_me">
-                            <span>Ingat saya</span>
-                        </label>
+                        <div></div>
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}" class="forgot-link">
                                 Lupa password?

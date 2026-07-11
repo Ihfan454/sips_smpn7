@@ -76,7 +76,7 @@ class PasswordToggle {
 }
 
 // ========================================
-// LOGIN TYPE SELECTOR (Email / NISN / NUPTK)
+// LOGIN TYPE SELECTOR (Email / NIP / NI PPPK)
 // ========================================
 class LoginTypeSelector {
     constructor() {
@@ -86,6 +86,7 @@ class LoginTypeSelector {
     }
 
     init() {
+        this.loginTypeInput = document.getElementById('login_type');
         if (!this.buttons.length || !this.identifierInput) return;
 
         this.buttons.forEach(btn => {
@@ -98,6 +99,12 @@ class LoginTypeSelector {
                 
                 // Update placeholder based on selected type
                 const type = btn.getAttribute('data-type');
+            
+                // Set hidden input value
+                if (this.loginTypeInput) {
+                    this.loginTypeInput.value = type;
+                }
+
                 this.updatePlaceholder(type);
             });
         });
@@ -109,16 +116,16 @@ class LoginTypeSelector {
                 this.identifierInput.placeholder = 'Masukkan Email (contoh: nama@email.com)';
                 this.identifierInput.setAttribute('type', 'email');
                 break;
-            case 'nisn':
-                this.identifierInput.placeholder = 'Masukkan NISN (10 digit)';
+            case 'nip':
+                this.identifierInput.placeholder = 'Masukkan 18 digit NIP';
                 this.identifierInput.setAttribute('type', 'text');
                 break;
-            case 'nuptk':
-                this.identifierInput.placeholder = 'Masukkan NUPTK Guru';
+            case 'ni_pppk':
+                this.identifierInput.placeholder = 'Masukkan 18 digit NI PPPK';
                 this.identifierInput.setAttribute('type', 'text');
                 break;
             default:
-                this.identifierInput.placeholder = 'Email / NISN / NUPTK';
+                this.identifierInput.placeholder = 'Email / NIP / PPPK';
         }
     }
 }
@@ -145,7 +152,7 @@ class FormValidation {
 
             // Validate identifier
             if (!identifier.value.trim()) {
-                this.showError(identifier, 'Email / NISN / NUPTK harus diisi');
+                this.showError(identifier, 'Identitas masuk harus diisi');
                 isValid = false;
             }
 

@@ -14,8 +14,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'nip',
+        'ni_pppk',
         'password',
-        'nuptk',
         'role',
         'class_id',
         'jabatan',
@@ -62,15 +63,6 @@ class User extends Authenticatable
         return $this->role === 'guru_bk';
     }
 
-    public function isWaliKelas()
-    {
-        return $this->role === 'wali_kelas';
-    }
-
-    public function isKepalaSekolah()
-    {
-        return $this->role === 'kepala_sekolah';
-    }
 
     // Scope untuk user aktif
     public function scopeActive($query)

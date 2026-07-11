@@ -13,17 +13,7 @@ class PelanggaranController extends Controller
     {
         $query = Pelanggaran::with('siswa');
 
-        // Batasi Wali Kelas
-        if (auth()->user()->isWaliKelas()) {
-            if (auth()->user()->class_id) {
-                $query->whereHas('siswa', function ($q) {
-                    $q->where('class_id', auth()->user()->class_id);
-                });
-            } else {
-                $data_pelanggaran = collect();
-                return view('pelanggaran', compact('data_pelanggaran'));
-            }
-        }
+
 
         $data_pelanggaran = $query->latest()->get();
         return view('pelanggaran', compact('data_pelanggaran'));
@@ -72,5 +62,56 @@ class PelanggaranController extends Controller
         Pelanggaran::create($data);
 
         return redirect()->route('pelanggaran')->with('success', 'Data pelanggaran berhasil dicatat!');
+    }
+    public function edit($id)
+    {
+        if (!auth()->user()->isAdminBK() && !auth()->user()->isGuruBK()) {
+            abort(403, 'Anda tidak memiliki hak akses untuk mengubah pelanggaran.');
+        }
+
+        $pelanggaran = Pelanggaran::findOrFail($id);
+        $data_siswa = \App\Models\Siswa::orderBy('nama_lengkap', 'asc')->get();
+        return view('pelanggaran-edit', compact('pelanggaran', 'data_siswa'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        if (!auth()->user()->isAdminBK() && !auth()->user()->isGuruBK()) {
+            abort(403, 'Anda tidak memiliki hak akses untuk mengubah pelanggaran.');
+        }
+
+        $pelanggaran = Pelanggaran::findOrFail($id);
+
+        $request->validate([
+            'siswa_id' => 'required|exists:siswa,id',
+            'jenis_pelanggaran' => 'required|string',
+            'kategori' => 'required|in:ringan,sedang,berat',
+            'poin' => 'required|numeric|min:1',
+            'tanggal' => 'required|date',
+            'catatan' => 'nullable|string',
+        ]);
+
+        $pelanggaran->update([
+            'siswa_id' => $request->siswa_id,
+            'jenis_pelanggaran' => $request->jenis_pelanggaran,
+            'kategori' => $request->kategori,
+            'poin' => $request->poin,
+            'tanggal_pelanggaran' => $request->tanggal,
+            'deskripsi' => $request->catatan,
+        ]);
+
+        return redirect()->route('pelanggaran')->with('success', 'Data pelanggaran berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        if (!auth()->user()->isAdminBK() && !auth()->user()->isGuruBK()) {
+            abort(403, 'Anda tidak memiliki hak akses untuk menghapus pelanggaran.');
+        }
+
+        $pelanggaran = Pelanggaran::findOrFail($id);
+        $pelanggaran->delete();
+
+        return redirect()->route('pelanggaran')->with('success', 'Data pelanggaran berhasil dihapus!');
     }
 }

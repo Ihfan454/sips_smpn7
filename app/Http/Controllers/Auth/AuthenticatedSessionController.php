@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Siswa;
+use App\Models\Kelas;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -16,7 +18,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
+        $siswaCount = Siswa::count();
+        $waliKelasCount = \App\Models\WaliKelas::count();
+        $kelasCount = Kelas::count();
+
+        return view('auth.login', compact('siswaCount', 'waliKelasCount', 'kelasCount'));
     }
 
     /**

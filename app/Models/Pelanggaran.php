@@ -12,7 +12,7 @@ class Pelanggaran extends Model
     protected $fillable = [
         'siswa_id',
         'user_id',
-        'guru_kelas_id',
+        'wali_kelas_id',
         'jenis_pelanggaran',
         'kategori',
         'poin',
@@ -41,8 +41,8 @@ class Pelanggaran extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function guruKelas(): BelongsTo
+    public function waliKelas(): BelongsTo
     {
-        return $this->belongsTo(GuruKelas::class, 'guru_kelas_id');
+        return $this->belongsTo(WaliKelas::class, 'wali_kelas_id');
     }
 }
